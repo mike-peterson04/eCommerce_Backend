@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstname\": \"David\",\r\n    \"lastname\": \"Lagrange\",\r\n    \"username\": \"dlagrange\",\r\n    \"password\": \"someBadPass12\",\r\n    \"email\": \"david@devcodecamp.com\",\r\n    \"phonenumber\": \"262-247-5847\"\r\n}",
+							"raw": "{\r\n    \"firstname\": \"David\",\r\n    \"lastname\": \"Lagrange\",\r\n    \"username\": \"dlagrange\",\r\n    \"password\": \"somePass12\",\r\n    \"email\": \"david@devcodecamp.com\",\r\n    \"phonenumber\": \"555-555-5555\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"dlagrange\",\r\n    \"password\": \"someBadPass12\"\r\n}",
+							"raw": "{\r\n    \"username\": \"dlagrange\",\r\n    \"password\": \"somePass12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,14 +76,7 @@
 					"name": "Get_Current_User",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZGxhZ3JhbmdlIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiNmI4MTQyOGYtNjY1NS00YTdiLWJjMWEtODAyZTQyYzdmMzU3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTYyMDk0Mjg4NSwiaXNzIjoiZUNvbW1lcmNlV2ViQVBJIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSJ9.j0tyGpV470iDbTFoHBL1r6haSazBKcokzLQre7Lk_Ik",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
