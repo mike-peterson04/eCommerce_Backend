@@ -51,7 +51,9 @@ namespace eCommerceStarterCode.Managers
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                new Claim("username", _user.UserName),
+                new Claim("email", _user.Email),
+                new Claim("id", _user.Id)
             };
 
             var roles = await _userManager.GetRolesAsync(_user);
