@@ -20,6 +20,10 @@ namespace eCommerceStarterCode.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Composite Key Declaration
+            modelBuilder.Entity<ShoppingCart>().HasKey(SC => new { SC.CustomerId, SC.ProductId });
+
+            //end of keys
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RolesConfiguration());

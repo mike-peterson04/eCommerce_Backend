@@ -48,15 +48,15 @@ namespace eCommerceStarterCode.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "518c75b5-23bf-43e5-8db7-f0ca5dafbb1a",
-                            ConcurrencyStamp = "8826f032-0ab5-4e59-9b05-a110caaee3b8",
+                            Id = "6a14d63c-764e-4ed4-b255-d5aa7a48be23",
+                            ConcurrencyStamp = "28973ee7-1cd6-4274-92eb-963999dc1a50",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "ccca4372-7ce6-4c97-a1c7-098080f1df60",
-                            ConcurrencyStamp = "5d8cb76e-b534-4c8b-bf6e-47258d5dde20",
+                            Id = "9322b6fb-c7c3-4b9d-913a-8f283a8a620f",
+                            ConcurrencyStamp = "9fd9d1ac-d592-4edf-97aa-7d578720269b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -166,6 +166,26 @@ namespace eCommerceStarterCode.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("eCommerceStarterCode.Models.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Customer");
+                });
+
             modelBuilder.Entity("eCommerceStarterCode.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -216,6 +236,24 @@ namespace eCommerceStarterCode.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("eCommerceStarterCode.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomerId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("eCommerceStarterCode.Models.User", b =>
@@ -340,6 +378,15 @@ namespace eCommerceStarterCode.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("eCommerceStarterCode.Models.Customer", b =>
+                {
+                    b.HasOne("eCommerceStarterCode.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("eCommerceStarterCode.Models.Product", b =>
                 {
                     b.HasOne("eCommerceStarterCode.Models.User", "User")
@@ -358,6 +405,25 @@ namespace eCommerceStarterCode.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("eCommerceStarterCode.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("eCommerceStarterCode.Models.Customer", "User")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eCommerceStarterCode.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
