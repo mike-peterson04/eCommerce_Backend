@@ -17,9 +17,9 @@ namespace eCommerceStarterCode.Models
         public string Description { get; set; }
         public int Category { get; set; }
 
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public User User { get; set; }
+        [ForeignKey("vendorId")]
+        public int VendorId { get; set; }
+        public Vendor Vendor { get; set; }
 
 
     }

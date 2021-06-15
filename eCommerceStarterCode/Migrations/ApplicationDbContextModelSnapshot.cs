@@ -48,15 +48,15 @@ namespace eCommerceStarterCode.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6a14d63c-764e-4ed4-b255-d5aa7a48be23",
-                            ConcurrencyStamp = "28973ee7-1cd6-4274-92eb-963999dc1a50",
+                            Id = "6dc31515-3d13-4cd3-b581-bee8530fed35",
+                            ConcurrencyStamp = "3a037a07-6c36-4972-9492-c20f13ee00d6",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "9322b6fb-c7c3-4b9d-913a-8f283a8a620f",
-                            ConcurrencyStamp = "9fd9d1ac-d592-4edf-97aa-7d578720269b",
+                            Id = "135732d2-5771-4c89-a51d-ce85de4b263d",
+                            ConcurrencyStamp = "febd49f4-1682-4a2d-93ce-52f9b2444e31",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -205,12 +205,12 @@ namespace eCommerceStarterCode.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("VendorId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("VendorId");
 
                     b.ToTable("Products");
                 });
@@ -327,6 +327,23 @@ namespace eCommerceStarterCode.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("eCommerceStarterCode.Models.Vendor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Vendor");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -389,11 +406,13 @@ namespace eCommerceStarterCode.Migrations
 
             modelBuilder.Entity("eCommerceStarterCode.Models.Product", b =>
                 {
-                    b.HasOne("eCommerceStarterCode.Models.User", "User")
+                    b.HasOne("eCommerceStarterCode.Models.Vendor", "Vendor")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("eCommerceStarterCode.Models.Review", b =>
@@ -422,6 +441,15 @@ namespace eCommerceStarterCode.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("eCommerceStarterCode.Models.Vendor", b =>
+                {
+                    b.HasOne("eCommerceStarterCode.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
