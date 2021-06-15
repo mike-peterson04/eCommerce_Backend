@@ -48,15 +48,15 @@ namespace eCommerceStarterCode.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "27d6db68-7653-411d-a40c-edf8fec54d3b",
-                            ConcurrencyStamp = "b5f1460b-1d36-4420-9010-05c262922b01",
+                            Id = "9972c4a3-a34a-4209-be22-849c56bd1afb",
+                            ConcurrencyStamp = "413bb237-d524-45f8-a0ba-21f7dc971a59",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "d2bfce0a-8829-46fa-9ed6-5b9bde933d76",
-                            ConcurrencyStamp = "3ba11b24-aeb2-4b57-9631-4bfa3ee2c897",
+                            Id = "152026d6-0340-4e34-972e-5710d923363f",
+                            ConcurrencyStamp = "a0218ecc-cc5a-428e-8756-9e9e6338418f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -327,6 +327,23 @@ namespace eCommerceStarterCode.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("eCommerceStarterCode.Models.Vendor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Vendors");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -422,6 +439,15 @@ namespace eCommerceStarterCode.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("eCommerceStarterCode.Models.Vendor", b =>
+                {
+                    b.HasOne("eCommerceStarterCode.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
