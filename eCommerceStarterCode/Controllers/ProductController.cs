@@ -33,15 +33,39 @@ namespace eCommerceStarterCode.Controllers
 
         // GET api/<ProductController>/5
         [HttpGet("{id}"), Authorize]
-        public string Get(int id)
+        public IActionResult Get(int id=-1 , [FromBody] string name="noName")
         {
-            return "value";
+            try
+            {
+                if (id < 0 && name == "noName")
+                {
+                    return StatusCode(400, "no match found"); 
+                }
+                else if (id < 0)
+                {
+                    name = name.ToUpper();
+                    var product = _context.Products.Where(p => p.Name.ToUpper() == name).SingleOrDefault();
+                    return StatusCode(200,product);
+                }
+                else
+                {
+                    var product = _context.Products.Where(p => p.Category == id).SingleOrDefault();
+                    return StatusCode(200, product);
+                }
+            }
+            catch
+            {
+                return StatusCode(400, "no match found");
+            }
+            
+            
         }
 
         // POST api/<ProductController>/new
         [HttpPost("new"), Authorize]
         public IActionResult Post([FromBody] Product newproduct)
         {
+
             _context.Products.Update(newproduct);
             _context.SaveChanges();
             return StatusCode(201, newproduct);
