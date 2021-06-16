@@ -25,21 +25,28 @@ namespace eCommerceStarterCode.Controllers
         [HttpPost("add"), Authorize]
         public IActionResult Post([FromBody] ShoppingCart newItem)
         {
-            newItem.Product = _context.Products.Where(p => p.Id == newItem.ProductId).SingleOrDefault();
-            newItem.User = _context.Customers.Where(u => u.Id == newItem.CustomerId).SingleOrDefault();
-            var exists = _context.ShoppingCarts.Where(sc => sc.CustomerId == newItem.CustomerId && sc.ProductId == newItem.ProductId).Select(sc => sc.Quantity).SingleOrDefault();
-            Console.WriteLine(exists);
-            if (exists > 0)
+            try
             {
-                newItem.Quantity += exists;
-                _context.ShoppingCarts.Update(newItem);
+                newItem.Product = _context.Products.Where(p => p.Id == newItem.ProductId).SingleOrDefault();
+                newItem.User = _context.Customers.Where(u => u.Id == newItem.CustomerId).SingleOrDefault();
+                var exists = _context.ShoppingCarts.Where(sc => sc.CustomerId == newItem.CustomerId && sc.ProductId == newItem.ProductId).Select(sc => sc.Quantity).SingleOrDefault();
+                Console.WriteLine(exists);
+                if (exists > 0)
+                {
+                    newItem.Quantity += exists;
+                    _context.ShoppingCarts.Update(newItem);
+                }
+                else
+                {
+                    _context.ShoppingCarts.Add(newItem);
+                }
+                _context.SaveChanges();
+                return StatusCode(201, newItem);
             }
-            else
+            catch
             {
-                _context.ShoppingCarts.Add(newItem);
+                return StatusCode(404, "Something went wrong!");
             }
-            _context.SaveChanges();
-            return StatusCode(201, newItem);
         }
 
         [HttpGet("{id}"), Authorize]
