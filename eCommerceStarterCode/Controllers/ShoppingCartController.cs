@@ -6,7 +6,9 @@ using eCommerceStarterCode.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace eCommerceStarterCode.Controllers
 {
@@ -38,6 +40,15 @@ namespace eCommerceStarterCode.Controllers
             }
             _context.SaveChanges();
             return StatusCode(201, newItem);
+        }
+
+        [HttpGet("cart"), Authorize]
+        public IEnumerable<ShoppingCart> Get()
+        {
+            var userid = User.FindFirstValue("id");
+            var user = _context.Users.Find(userid);
+            var ShoppingCart = _context.ShoppingCarts.Where(p => p.User.UserId == user.Id);
+            return ShoppingCart;
         }
     }
 }
