@@ -42,13 +42,33 @@ namespace eCommerceStarterCode.Controllers
             return StatusCode(201, newItem);
         }
 
-        [HttpGet("cart"), Authorize]
+        [HttpGet("{id}"), Authorize]
         public IEnumerable<ShoppingCart> Get()
         {
             var userid = User.FindFirstValue("id");
             var user = _context.Users.Find(userid);
             var ShoppingCart = _context.ShoppingCarts.Where(p => p.User.UserId == user.Id);
             return ShoppingCart;
+        }
+
+        [HttpDelete("{id}"), Authorize]
+        public IActionResult Delete([FromBody] int productId)
+        {
+            try
+            {
+                var userId = User.FindFirstValue("id");
+                var customerId = _context.Customers.Where(c => c.UserId == userId).SingleOrDefault();
+                var ShoppingCartItem = _context.ShoppingCarts.Where(p => p.User.Id == customerId.Id && p.ProductId == productId).SingleOrDefault();
+                _context.ShoppingCarts.Remove(ShoppingCartItem);
+                _context.SaveChanges();
+                return StatusCode(200, ShoppingCartItem);
+            }
+            catch
+            {
+                string error = "No shopping Cart Found.";
+                return StatusCode(404, error);
+            }
+            
         }
     }
 }
