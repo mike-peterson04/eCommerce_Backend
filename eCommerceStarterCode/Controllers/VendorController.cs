@@ -26,6 +26,11 @@ namespace eCommerceStarterCode.Controllers
         {
             try
             {
+                var userId = User.FindFirstValue("id");
+                if (userId == newVendor.UserId)
+                {
+                    return StatusCode(301, "You are already a registered vendor.");
+                }
                 _context.Vendors.Update(newVendor);
                 _context.SaveChanges();
                 return StatusCode(201, newVendor);
