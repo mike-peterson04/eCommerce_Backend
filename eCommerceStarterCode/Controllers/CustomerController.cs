@@ -28,5 +28,19 @@ namespace eCommerceStarterCode.Controllers
             _context.SaveChanges();
             return StatusCode(201, NewCustomer);
         }
+
+        [HttpGet("all-customers"), Authorize]
+        public IEnumerable<Customer> GetCustomers()
+        {
+            var Customers = _context.Customers;
+            return Customers;
+        }
+
+        [HttpGet("{id}"), Authorize]
+        public IActionResult Get(int id)
+        {
+            var customer = _context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            return Ok(customer);
+        }
     }
 }
