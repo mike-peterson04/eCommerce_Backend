@@ -25,13 +25,14 @@ namespace eCommerceStarterCode.Controllers
         }
         // GET: api/<ProductController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Product> Get()
         {
-            return new string[] { "value1", "value2" };
+            var products = _context.Products;
+            return products;
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public string Get(int id)
         {
             return "value";
@@ -47,15 +48,30 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{id}"), Authorize]
+        public IActionResult Put(int id, [FromBody] Product changedProduct)
         {
+
+            var original = _context.Products.Where(p => p.Id == id).SingleOrDefault();
+
+            original.Name = changedProduct.Name;
+            original.Price = changedProduct.Price;
+            original.Description = changedProduct.Description;
+            original.Category = changedProduct.Category;
+            original.VendorId = changedProduct.VendorId;
+            _context.Products.Update(original);
+            _context.SaveChanges();
+            return StatusCode(200, original);
         }
 
         // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id}"), Authorize]
+        public IActionResult Delete(int id)
         {
+            var product = _context.Products.Where(p => p.Id == id).SingleOrDefault();
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+            return StatusCode(200, product);
         }
     }
 }
