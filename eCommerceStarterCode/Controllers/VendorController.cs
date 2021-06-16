@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using eCommerceStarterCode.Models;
-using eCommerceStarterCode.DataTransferObjects;
 using eCommerceStarterCode.Data;
 using System;
 using System.Collections.Generic;
