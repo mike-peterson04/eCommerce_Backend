@@ -25,10 +25,18 @@ namespace eCommerceStarterCode.Controllers
         }
         // GET: api/<ProductController>
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IActionResult Get()
         {
-            var products = _context.Products;
-            return products;
+            try
+            {
+                var products = _context.Products;
+                return StatusCode(200,products);
+            }
+            catch 
+            {
+                return StatusCode(400, "No Products exist");
+
+            }
         }
 
         // GET api/<ProductController>/5
@@ -65,37 +73,60 @@ namespace eCommerceStarterCode.Controllers
         [HttpPost("new"), Authorize]
         public IActionResult Post([FromBody] Product newproduct)
         {
-
-            _context.Products.Update(newproduct);
-            _context.SaveChanges();
-            return StatusCode(201, newproduct);
+            try
+            {
+                _context.Products.Update(newproduct);
+                _context.SaveChanges();
+                return StatusCode(201, newproduct);
+            }
+            catch
+            {
+                return StatusCode(400, "no match found");
+            }
+            
         }
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}"), Authorize]
         public IActionResult Put(int id, [FromBody] Product changedProduct)
         {
+            try
+            {
+                var original = _context.Products.Where(p => p.Id == id).SingleOrDefault();
 
-            var original = _context.Products.Where(p => p.Id == id).SingleOrDefault();
+                original.Name = changedProduct.Name;
+                original.Price = changedProduct.Price;
+                original.Description = changedProduct.Description;
+                original.Category = changedProduct.Category;
+                original.VendorId = changedProduct.VendorId;
+                _context.Products.Update(original);
+                _context.SaveChanges();
+                return StatusCode(200, original);
+            }
+            catch
+            {
+                return StatusCode(400, "no match found");
+            }
 
-            original.Name = changedProduct.Name;
-            original.Price = changedProduct.Price;
-            original.Description = changedProduct.Description;
-            original.Category = changedProduct.Category;
-            original.VendorId = changedProduct.VendorId;
-            _context.Products.Update(original);
-            _context.SaveChanges();
-            return StatusCode(200, original);
+            
         }
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}"), Authorize]
         public IActionResult Delete(int id)
         {
-            var product = _context.Products.Where(p => p.Id == id).SingleOrDefault();
-            _context.Products.Remove(product);
-            _context.SaveChanges();
-            return StatusCode(200, product);
+            try
+            {
+                var product = _context.Products.Where(p => p.Id == id).SingleOrDefault();
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+                return StatusCode(200, product);
+            }
+            catch
+            {
+                return StatusCode(400, "no match found");
+            }
+            
         }
     }
 }
