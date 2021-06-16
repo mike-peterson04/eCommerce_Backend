@@ -6,6 +6,7 @@ using eCommerceStarterCode.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eCommerceStarterCode.Controllers
@@ -23,9 +24,24 @@ namespace eCommerceStarterCode.Controllers
         [HttpPost("create"), Authorize]
         public IActionResult Post([FromBody]Vendor newVendor)
         {
-            _context.Vendors.Update(newVendor);
-            _context.SaveChanges();
-            return StatusCode(201, newVendor);
+            try
+            {
+                _context.Vendors.Update(newVendor);
+                _context.SaveChanges();
+                return StatusCode(201, newVendor);
+            }
+            catch
+            {
+                return StatusCode(404, "Something went wrong!");
+            }
+        }
+
+        [HttpGet, Authorize]
+        public IActionResult Get()
+        {
+            var userid = User.FindFirstValue("id");
+            Vendor vendor = _context.Vendors.Where(v => v.UserId == userid).SingleOrDefault();
+            return StatusCode(201, vendor);
         }
 
 
