@@ -48,8 +48,11 @@ namespace eCommerceStarterCode.Controllers
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] Product newproduct)
         {
+            _context.Products.Update(newproduct);
+            _context.SaveChanges();
+            return StatusCode(200, newproduct);
         }
 
         // DELETE api/<ProductController>/5
