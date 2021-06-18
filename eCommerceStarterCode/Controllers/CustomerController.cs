@@ -40,10 +40,10 @@ namespace eCommerceStarterCode.Controllers
 
         // GET REQUEST TO RETRIEVE CUSTOMER BY ID
         [HttpGet("{id}"), Authorize]
-        public IActionResult Get(int id)
+        public IActionResult Get(string id)
         {
             // Query db for customer with matching id 
-            var customer = _context.Customers.Where(c => c.Id == id).SingleOrDefault();
+            var customer = _context.Customers.Where(c => c.UserId == id).SingleOrDefault();
 
             // Return customer with 'Ok' 200 status code
             return Ok(customer);
