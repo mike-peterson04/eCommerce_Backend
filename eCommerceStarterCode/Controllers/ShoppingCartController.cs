@@ -59,13 +59,13 @@ namespace eCommerceStarterCode.Controllers
         }
 
         [HttpDelete("{id}"), Authorize]
-        public IActionResult Delete([FromBody] int productId)
+        public IActionResult Delete([FromRoute] int id)
         {
             try
             {
                 var userId = User.FindFirstValue("id");
                 var customerId = _context.Customers.Where(c => c.UserId == userId).SingleOrDefault();
-                var ShoppingCartItem = _context.ShoppingCarts.Where(p => p.User.Id == customerId.Id && p.ProductId == productId).SingleOrDefault();
+                var ShoppingCartItem = _context.ShoppingCarts.Where(p => p.User.Id == customerId.Id && p.ProductId == id).SingleOrDefault();
                 _context.ShoppingCarts.Remove(ShoppingCartItem);
                 _context.SaveChanges();
                 return StatusCode(200, ShoppingCartItem);
