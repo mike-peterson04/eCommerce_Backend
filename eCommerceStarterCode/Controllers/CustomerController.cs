@@ -42,11 +42,18 @@ namespace eCommerceStarterCode.Controllers
         [HttpGet("{id}"), Authorize]
         public IActionResult Get(string id)
         {
-            // Query db for customer with matching id 
-            var customer = _context.Customers.Where(c => c.UserId == id).SingleOrDefault();
+            try
+            {
+                // Query db for customer with matching id 
+                var customer = _context.Customers.Where(c => c.UserId == id).SingleOrDefault();
 
-            // Return customer with 'Ok' 200 status code
-            return Ok(customer);
+                // Return customer with 'Ok' 200 status code
+                return Ok(customer);
+            }
+            catch
+            {
+                return StatusCode(400, "New");
+            }
         }
 
         // PUT REQUEST TO UPDATE CUSTOMER PROPERTIES
