@@ -40,7 +40,7 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("{id}"), Authorize]
+        [HttpGet("search/"+"{id}"), Authorize]
         public IActionResult Get(int id=-1 , [FromBody] string name="noName")
         {
             try
@@ -67,6 +67,23 @@ namespace eCommerceStarterCode.Controllers
             }
             
             
+        }
+        [HttpGet("{id}"), Authorize]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+              
+                    var product = _context.Products.Where(p => p.Id == id).SingleOrDefault();
+                    return StatusCode(200, product);
+                
+            }
+            catch
+            {
+                return StatusCode(400, "no match found");
+            }
+
+
         }
 
         // POST api/<ProductController>/new
