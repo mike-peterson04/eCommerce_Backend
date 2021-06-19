@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,26 +41,16 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("search/"+"{id}"), Authorize]
-        public IActionResult Get(int id=-1 , [FromBody] string name="noName")
+        [HttpGet("search"), Authorize]
+        public IActionResult Get([FromBody] string searchTerm)
         {
             try
             {
-                if (id < 0 && name == "noName")
-                {
-                    return StatusCode(400, "no match found"); 
-                }
-                else if (id < 0)
-                {
-                    name = name.ToUpper();
-                    var product = _context.Products.Where(p => p.Name.ToUpper() == name).SingleOrDefault();
-                    return StatusCode(200,product);
-                }
-                else
-                {
-                    var product = _context.Products.Where(p => p.Category == id).SingleOrDefault();
-                    return StatusCode(200, product);
-                }
+
+                searchTerm = searchTerm.ToUpper();
+                var products = _context.Products.Include(p => p.Category).Where(p => p.Name.ToUpper() == searchTerm || p.Category.Name.ToUpper() == searchTerm);
+                    return StatusCode(200,products);
+                
             }
             catch
             {
@@ -114,7 +105,7 @@ namespace eCommerceStarterCode.Controllers
                 original.Name = changedProduct.Name;
                 original.Price = changedProduct.Price;
                 original.Description = changedProduct.Description;
-                original.Category = changedProduct.Category;
+                original.CategoryId = changedProduct.CategoryId;
                 original.VendorId = changedProduct.VendorId;
                 _context.Products.Update(original);
                 _context.SaveChanges();
