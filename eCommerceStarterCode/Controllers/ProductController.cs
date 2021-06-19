@@ -41,14 +41,14 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("search"), Authorize]
+        [HttpGet("search")]
         public IActionResult Get([FromBody] string searchTerm)
         {
             try
             {
 
                 searchTerm = searchTerm.ToUpper();
-                var products = _context.Products.Include(p => p.Category).Where(p => p.Name.ToUpper() == searchTerm || p.Category.Name.ToUpper() == searchTerm);
+                var products = _context.Products.Include(p => p.Category).Where(p => p.Name.ToUpper().Contains(searchTerm)|| p.Category.Name.ToUpper().Contains(searchTerm));
                     return StatusCode(200,products);
                 
             }
