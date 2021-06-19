@@ -41,8 +41,8 @@ namespace eCommerceStarterCode.Controllers
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("search")]
-        public IActionResult Get([FromBody] string searchTerm)
+        [HttpGet("search/"+"{searchTerm}")]
+        public IActionResult Get(string searchTerm)
         {
             try
             {
