@@ -30,7 +30,7 @@ namespace eCommerceStarterCode.Controllers
         {
             try
             {
-                var products = _context.Products;
+                var products = _context.Products.Include(p=>p.Category);
                 return StatusCode(200,products);
             }
             catch 

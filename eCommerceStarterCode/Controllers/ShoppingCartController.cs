@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 
 namespace eCommerceStarterCode.Controllers
 {
@@ -54,7 +55,7 @@ namespace eCommerceStarterCode.Controllers
         {
             var userid = User.FindFirstValue("id");
             var user = _context.Users.Find(userid);
-            var ShoppingCart = _context.ShoppingCarts.Where(p => p.User.UserId == user.Id);
+            var ShoppingCart = _context.ShoppingCarts.Include(p=>p.Product).Where(p => p.User.UserId == user.Id);
             return ShoppingCart;
         }
 
