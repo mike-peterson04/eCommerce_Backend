@@ -50,7 +50,7 @@ namespace eCommerceStarterCode.Controllers
             }
         }
 
-        [HttpGet("{id}"), Authorize]
+        [HttpGet(), Authorize]
         public IEnumerable<ShoppingCart> Get()
         {
             var userid = User.FindFirstValue("id");
@@ -67,8 +67,18 @@ namespace eCommerceStarterCode.Controllers
                 var userId = User.FindFirstValue("id");
                 var customerId = _context.Customers.Where(c => c.UserId == userId).SingleOrDefault();
                 var ShoppingCartItem = _context.ShoppingCarts.Where(p => p.User.Id == customerId.Id && p.ProductId == id).SingleOrDefault();
-                _context.ShoppingCarts.Remove(ShoppingCartItem);
-                _context.SaveChanges();
+                if (ShoppingCartItem.Quantity > 1)
+                {
+                    ShoppingCartItem.Quantity--;
+                    _context.ShoppingCarts.Update(ShoppingCartItem);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    _context.ShoppingCarts.Remove(ShoppingCartItem);
+                    _context.SaveChanges();
+                }
+                
                 return StatusCode(200, ShoppingCartItem);
             }
             catch
