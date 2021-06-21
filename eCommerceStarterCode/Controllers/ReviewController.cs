@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace eCommerceStarterCode.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/review")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
